@@ -4,5 +4,5 @@ watchdog
 numpy
 pandas
 scipy
-sklearn
+scikit-learn
 imblearn
