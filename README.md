@@ -1,4 +1,4 @@
-# Data Science SQL Project 21
+# Data Science SQL Project 23
 
 ### Proje Kurulumu
 Projeyi öncelikle forklayın ve clone edin.
@@ -25,6 +25,5 @@ sırasıyla kendi local veritabanınızda çalıştırınız.
 
 # Questions
 * Senaryo:
-    Büyücüler, büyülerin başarı oranlarını karşılaştırmak için istatistiksel testler kullanıyorlar.
-    Görev, aşağıdaki fonksiyonları doğru şekilde yazmak.
+   "Witcher Universe" dünyasındaki canavar avcıları (witcher'lar), görevlerini kaydeden bir veri tabanına sahiptir. Biz bu veri seti üzerinde Explorative Data Analysis (EDA), Data Cleaning, Feature Engineering ve Data Preprocessing adımlarını uygulayacağız. Amacımız, bu veri setindeki canavar avı istatistiklerini incelemek, temizlemek, yeni özellikler üretmek ve makine öğrenmesi için hazır hale getirmektir.
 * task_manager.py dosyasının içerisindeki fonksiyonların içerisini doldurmaya çalışın
