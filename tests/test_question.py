@@ -11,37 +11,40 @@ from tasks.task_manager import *
 @pytest.fixture
 def sample_df():
     return pd.DataFrame({
-        "name": ["Geralt","Ciri","Leshen","Drowner","Vesemir"],
-        "character_class": ["witcher","witcher","monster","monster","witcher"],
-        "region": ["Kaer Morhen","Skellige","Swamp","Swamp","Kaer Morhen"],
-        "is_monster": [0,0,1,1,0]
+        "monster_name": ["Griffin", "Leshen", "Drowner"],
+        "region": ["Velen", "Novigrad", "Novigrad"],
+        "kills": [5, 2, 10],
+        "difficulty": ["Hard", "Medium", "Easy"],
+        "reward": [300, 150, 80]
     })
 
-def test_class_distribution(sample_df):
-    dist = get_class_distribution(sample_df, "is_monster")
-    assert sum(dist.values()) == 5
+def test_calculate_avg_reward(sample_df):
+    assert calculate_avg_reward(sample_df) == pytest.approx((300 + 150 + 80)/3)
 
-def test_label_encoding(sample_df):
-    df = apply_label_encoding(sample_df.copy(), "character_class")
-    assert df["character_class"].dtype in [np.int32, np.int64]
+def test_kills_by_region(sample_df):
+    result = kills_by_region(sample_df)
+    assert result["Novigrad"] == 12
+    assert result["Velen"] == 5
 
-def test_one_hot_encoding(sample_df):
-    df = apply_one_hot_encoding(sample_df.copy(), "region")
-    assert "region_Swamp" in df.columns
+def test_encode_difficulty(sample_df):
+    df = encode_difficulty(sample_df.copy())
+    assert df["difficulty"].tolist() == [3, 2, 1]
 
-def test_down_up_sampling(sample_df):
-    df_down = down_sample(sample_df.copy(), "is_monster")
-    df_up = up_sample(sample_df.copy(), "is_monster")
-    assert df_down.shape[0] <= 5
-    assert df_up.shape[0] >= 5
+def test_add_reward_per_kill(sample_df):
+    df = add_reward_per_kill(sample_df.copy())
+    assert "reward_per_kill" in df.columns
+    assert df["reward_per_kill"].iloc[0] == 300/5
 
-def test_split_features_target(sample_df):
-    X, y = split_features_target(sample_df, "is_monster")
-    assert len(X) == len(y)
+def test_filter_rare_monsters(sample_df):
+    df = filter_rare_monsters(sample_df.copy(), threshold=3)
+    assert set(df["monster_name"]) == {"Leshen"}
 
-def test_summarize(sample_df):
-    summary = summarize_dataset(sample_df)
-    assert "shape" in summary
+def test_get_most_dangerous_monster(sample_df):
+    assert get_most_dangerous_monster(sample_df) == "Drowner"
+
+def test_avg_reward_by_region(sample_df):
+    result = avg_reward_by_region(sample_df)
+    assert result["Novigrad"] == pytest.approx((150 + 80)/2)
 
 def send_post_request(url: str, data: dict, headers: dict = None):
     try:
